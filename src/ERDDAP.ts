@@ -16,7 +16,7 @@ export default class ERDDAP {
   constructor(url: string, private debug: boolean = false) {
     this.serverURL = ERDDAP.sanitizeERDDAPURL(url);
   }
-  static isValid8601DateTime(str: string): Boolean {
+  static isValid8601DateTime(str: string): boolean {
     if (typeof (str) !== 'string')
       return false
 
@@ -41,11 +41,13 @@ export default class ERDDAP {
 
   // reshapes ERDDAP's json response so it's easier for web apps to consume
   // see tests/ERDDAP.test.ts for an example of the translation
-  static reshapeJSON(erddapJSON: ERDDAP.JSONResponse): object[] {
+  static reshapeJSON(erddapJSON: ERDDAP.JSONResponse): Record<string, unknown>[] {
     const { columnNames, rows } = erddapJSON.table;
+    // for each row of data 
 
-    return rows.map((rowArray: any[]) =>
-      rowArray.reduce((rowObject: any, value: any[], i) => {
+    return rows.map((rowArray) =>
+      // combine the data with the column name to create an object
+      rowArray.reduce((rowObject: Record<string, unknown>, value, i) => {
         rowObject[columnNames[i]] = value;
         return rowObject;
       }, {})
@@ -54,7 +56,7 @@ export default class ERDDAP {
 
   // Query a url path such as "/tabledap/erdCinpKfmSFNH.json?id,size"
   // ERDDAP throws a 404 error when there is no data found, this returns an empty array instead
-  async queryURL(urlpath: string): Promise<any> {
+  async queryURL(urlpath: string): Promise<Record<string, unknown>[]> {
     const urlComplete = this.serverURL + urlpath;
     if (this.debug) console.warn(`FETCHING ${urlComplete}\n`)
     return fetch(urlComplete).then(async response => {
@@ -79,7 +81,7 @@ export default class ERDDAP {
    * @param {Array} options.orderVariables - Argument to pass to ordering function given in orderType
    * @returns {Object[]} Results array
    */
-  async tabledap(options: tabledapOptions) {
+  async tabledap(options: tabledapOptions): Promise<Record<string, unknown>[]> {
     return this.queryURL(tabledapURLBuilder(options));
   }
 
@@ -93,7 +95,7 @@ export default class ERDDAP {
   * @param {Array} options.longitude - An array with longitude range
   * @returns {Object[]} Results array
   */
-  async griddap(options: griddapOptions) {
+  async griddap(options: griddapOptions): Promise<Record<string, unknown>[]> {
     return this.queryURL(griddapURLBuilder(options));
   }
 
@@ -119,7 +121,7 @@ export default class ERDDAP {
    * @param {string} datasetID
    * @returns {Object[]} Results array
    */
-  async info(datasetID: string): Promise<object[]> {
+  async info(datasetID: string): Promise<Record<string, unknown>[]> {
     if (!datasetID) throw new Error('Missing dataset ID');
 
     return this.queryURL(`/info/${datasetID}/index.json`);
@@ -130,21 +132,22 @@ export default class ERDDAP {
   * Does not include variable information
   * @returns {Object[]} Results array
   */
-  async allDatasets(): Promise<object[]> {
+  async allDatasets(): Promise<Record<string, unknown>[]> {
     // this gets griddap datasets too
     const res = await this.queryURL("/tabledap/allDatasets.json");
 
     return res
-      .filter((e: any) => e.datasetID !== "allDatasets");
+      .filter((e: Record<string, unknown>) => e.datasetID !== "allDatasets");
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace ERDDAP {
   // used in parsing ERDDAP's json response
   export interface JSONResponse {
     table: {
       columnNames: string[];
-      rows: Array<any>;
+      rows: (string | number)[][];
     };
   }
 }

@@ -50,7 +50,10 @@ class ERDDAP {
     // see tests/ERDDAP.test.ts for an example of the translation
     static reshapeJSON(erddapJSON) {
         const { columnNames, rows } = erddapJSON.table;
-        return rows.map((rowArray) => rowArray.reduce((rowObject, value, i) => {
+        // for each row of data 
+        return rows.map((rowArray) => 
+        // combine the data with the column name to create an object
+        rowArray.reduce((rowObject, value, i) => {
             rowObject[columnNames[i]] = value;
             return rowObject;
         }, {}));

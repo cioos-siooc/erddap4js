@@ -21,7 +21,7 @@ export interface griddapOptions {
   variables: string[];
   [key: string]: any;
 }
-function isValidGriddapTime(str: string): Boolean {
+function isValidGriddapTime(str: string): boolean {
   if (str.startsWith('last')) return true;
   if (str.includes('NaN') || str.includes('now')) return false;
   return ERDDAP.isValid8601DateTime(str);

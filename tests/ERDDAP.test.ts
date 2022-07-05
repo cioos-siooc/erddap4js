@@ -52,11 +52,7 @@ describe("ERDDAP class", function () {
     it("validates times", function () {
       expect(ERDDAP.isValid8601DateTime("not a time")).to.equal(false);
     });
-    it("fails on non-strings", function () {
-      // @ts-ignore
-      expect(ERDDAP.isValid8601DateTime(new Date(1234))).to.equal(false);
-    });
-    it("works sometimes", function () {
+    it("accepts ISO 8601 strings", function () {
       expect(ERDDAP.isValid8601DateTime("2020-03-13T12:00:00Z")).to.equal(true);
     });
   });

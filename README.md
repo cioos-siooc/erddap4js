@@ -10,10 +10,10 @@ Simple [ERDDAP](https://coastwatch.pfeg.noaa.gov/erddap/index.html) library for 
 
 See a demo in demo/browser/index.html
 
-Copy the file dist/browser/ERDDAP.js to the same folder with your HTML file.
+Copy the file dist/browser/erddap4js.js to the same folder with your HTML file.
 
 ```html
-<script src="ERDDAP.js"></script>
+<script src="erddap4js.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", async function () {
     const erddapServer = new ERDDAP("https://coastwatch.pfeg.noaa.gov/erddap");

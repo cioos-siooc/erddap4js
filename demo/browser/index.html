@@ -4,26 +4,58 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>ERDDAP JS</title>
-</head>
+  <title>ERDDAP4JS Demo</title>
 
-<body>
-  <script src="../../dist/browser/ERDDAP.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="../../dist/browser/erddap4js.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", async function () {
+
+      // get recent data from ERDDAP
       const erddapServer = new ERDDAP(
-        "https://coastwatch.pfeg.noaa.gov/erddap"
+        "https://catalogue.hakai.org/erddap/"
       );
 
       const data = await erddapServer.tabledap({
-        dataset: "erdCinpKfmSFNH",
-        variables: ["id", "size"],
-        constraints: [["time", ">=", "2007-06-24T00:00:00Z"]]
+        dataset: "HakaiBaynesSoundBoL5min",
+        variables: ["time", "pCO2_uatm_Med"],
+        constraints: [["time", ">=", "now-7days"]]
       });
 
-      console.log(data);
+      const x = data.map(e => e.time);
+      const y = data.map(e => e.pCO2_uatm_Med);
+
+      // display using Plotly
+      const plotlyDiv = document.getElementById('plotlyDiv');
+
+      var layout = {
+        title: 'HakaiBaynesSoundBoL5min',
+        xaxis: {
+          title: 'Date',
+        },
+        yaxis: {
+          title: 'pCO2_uatm_Med',
+        },
+        margin: { t: 0 }
+
+      };
+
+      Plotly.newPlot(plotlyDiv, [{
+        x,
+        y
+      }], layout);
     });
   </script>
+
+</head>
+
+<body>
+  <h3>HakaiBaynesSoundBoL5min Dashboard</h3>
+  <div id="plotlyDiv" style="width:80%;height:80%"></div>
+
+  <h5>Source: <a
+      href="https://catalogue.hakai.org/erddap/tabledap/HakaiBaynesSoundBoL5min.html">https://catalogue.hakai.org/erddap/tabledap/HakaiBaynesSoundBoL5min.html</a>
+  </h5>
 </body>
 
 </html>

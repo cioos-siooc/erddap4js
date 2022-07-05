@@ -46,10 +46,9 @@ function tabledapURLBuilder(options) {
         constraints.forEach(constraint => {
             if (constraint.length !== 3)
                 throw new Error("Constraint must be an array of arrays with 3 elements, eg constraints: [['temperature','>=',1]] ");
-            let [variable, operator, value] = constraint;
+            const [variable, operator, value] = constraint;
             // ERDDAP expects text to be quoted
             if (variable !== 'time' && (operator == '=~' ||
-                // @ts-ignore
                 (typeof value == 'string' && isNaN(value) && !(value.startsWith('"') && value.endsWith('"'))))) {
                 constraint[2] = `"${value}"`;
             }
@@ -60,8 +59,8 @@ function tabledapURLBuilder(options) {
                 // some basic type checking of special case variables (LLAT variables)
                 switch (variable) {
                     case "time":
-                        // Allowed: "1985-07-01T00:00:00Z", "2005-12","now","NaN",
-                        if (!ERDDAP_1.default.isValid8601DateTime(value) && value != 'now' && value != "NaN")
+                        // Allowed: "1985-07-01T00:00:00Z", "2005-12","now","NaN", "now-7 days" etc
+                        if (!ERDDAP_1.default.isValid8601DateTime(value) && !value.startsWith('now') && value != "NaN")
                             throw new Error(`Invalid date: "${value}". Should look like: 2005-07-01T00:00:00Z, 2005-07-05, 2005-06`);
                         break;
                     case "latitude":
