@@ -1,6 +1,9 @@
 # erddap4js - ERDDAP JavaScript interface for the browser & Node
 
-[![Node.js CI](https://github.com/n-a-t-e/erddap4js/workflows/Node.js%20CI/badge.svg)](https://github.com/n-a-t-e/erddap4js/actions) [![Coverage Status](https://coveralls.io/repos/github/n-a-t-e/erddap4js/badge.svg?branch=master)](https://coveralls.io/github/n-a-t-e/erddap4js?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![NPM](https://nodei.co/npm/erddap4js.png?mini=true)](https://npmjs.org/package/erddap4js)
+[![Node.js CI](https://github.com/n-a-t-e/erddap4js/workflows/Node.js%20CI/badge.svg)](https://github.com/n-a-t-e/erddap4js/actions)
+[![Coverage Status](https://coveralls.io/repos/github/n-a-t-e/erddap4js/badge.svg?branch=master)](https://coveralls.io/github/n-a-t-e/erddap4js?branch=master)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![NPM](https://nodei.co/npm/erddap4js.png?mini=true)](https://npmjs.org/package/erddap4js)
 
 Simple [ERDDAP](https://coastwatch.pfeg.noaa.gov/erddap/index.html) library for JS, written in TypeScript. Works in Node or the browser. Supports tabledap and griddap queries. Browser version is dependency free.
 
